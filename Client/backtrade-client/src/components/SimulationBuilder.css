@@ -1,0 +1,62 @@
+/* SimulationBuilder.css */
+
+.simulation-builder .MuiFormControl-root {
+    margin-bottom: 20px;
+}
+
+.simulation-builder .MuiInputLabel-root,
+.simulation-builder .MuiFormControlLabel-label {
+    color: #ffffff;
+}
+
+.simulation-builder .MuiInputBase-input {
+    color: #ffffff;
+}
+
+.simulation-builder .MuiInputBase-root::before,
+.simulation-builder .MuiInputBase-root::after {
+    border-bottom-color: #ffffff;
+}
+
+.simulation-builder .MuiSelect-icon {
+    color: #ffffff;
+}
+
+.simulation-builder .MuiButton-containedPrimary {
+    background-color: #3f51b5;
+}
+
+.simulation-builder .MuiButton-containedPrimary:hover {
+    background-color: #303f9f;
+}
+
+.simulation-builder .MuiSwitch-track {
+    background-color: #ffffffbc;
+}
+
+.css-bghv3y-MuiToggleButtonGroup-root .MuiToggleButtonGroup-grouped {
+    background-color: #000000be;
+    color: #ffffff8c;
+    border: 1px solid white;
+}
+
+.MuiInputBase-root.MuiOutlinedInput-root.MuiInputBase-colorPrimary.css-1h5i6c5-MuiInputBase-root-MuiOutlinedInput-root {
+    background-color: #5e5e5e;
+    border: 1px white solid;
+    height: 5%;
+    width: 80%;
+}
+
+.css-yi3mkw {
+    flex-wrap: nowrap;
+}
+
+.MuiChip-root {
+    background-color: #5e5e5e !important;
+    color: #ffffff !important;
+}
+
+.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
+    border: 1px white solid;
+    
+}
