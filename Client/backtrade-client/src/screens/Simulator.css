@@ -27,7 +27,7 @@
     margin: auto;
 }
 
-button {
+button.finish-button, .restart-button {
     margin: 0.5rem !important;
     color: black !important;
     font-weight: bold !important;

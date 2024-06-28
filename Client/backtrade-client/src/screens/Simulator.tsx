@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -6,10 +6,11 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Button, IconButton, InputLabel, MenuItem, Select, Slider, TextField } from '@mui/material';
+import { Button, Dialog, DialogContent, DialogTitle, IconButton, InputLabel, MenuItem, Select, Slider, TextField } from '@mui/material';
 import { KeyboardDoubleArrowLeft, KeyboardArrowLeft, KeyboardDoubleArrowRight, KeyboardArrowRight, PlayCircleFilled, Add, Remove } from '@mui/icons-material';
 import "./Simulator.css";
 import { LineChart } from '@mui/x-charts';
+import SimulationBuilder from '../components/SimulationBuilder';
 
 type TitleRow = {
   title: string;
@@ -56,40 +57,40 @@ type Portfolio = {
 }
 
 const optionChainTitles: TitleRow[] = [
-  {title: "Delta", property: "callDelta"},
-  {title: "Option Open Interest", property: "callOptionOpenInterest", styles: ["numberEnding"]},
-  {title: "Volume", property: "callVolume"},
-  {title: "BID Size", property: "callBidSize"},
-  {title: "BID", property: "callBid"},
-  {title: "Ask", property: "callAsk"},
-  {title: "Ask Size", property: "callAskSize"},
-  {title: "Strike", property: "strike"},
-  {title: "Delta", property: "putDelta"},
-  {title: "Option Open Interest", property: "putOptionOpenInterest", styles: ["numberEnding"]},
-  {title: "Volume", property: "putVolume"},
-  {title: "BID Size", property: "putBidSize"},
-  {title: "BID", property: "putBid"},
-  {title: "Ask", property: "putAsk"},
-  {title: "Ask Size", property: "putAskSize"},
+  { title: "Delta", property: "callDelta" },
+  { title: "Option Open Interest", property: "callOptionOpenInterest", styles: ["numberEnding"] },
+  { title: "Volume", property: "callVolume" },
+  { title: "BID Size", property: "callBidSize" },
+  { title: "BID", property: "callBid" },
+  { title: "Ask", property: "callAsk" },
+  { title: "Ask Size", property: "callAskSize" },
+  { title: "Strike", property: "strike" },
+  { title: "Delta", property: "putDelta" },
+  { title: "Option Open Interest", property: "putOptionOpenInterest", styles: ["numberEnding"] },
+  { title: "Volume", property: "putVolume" },
+  { title: "BID Size", property: "putBidSize" },
+  { title: "BID", property: "putBid" },
+  { title: "Ask", property: "putAsk" },
+  { title: "Ask Size", property: "putAskSize" },
 ];
 
 const optionChainMock: OptionChain[] = [
   {
-  callDelta: 0.981,
-  callOptionOpenInterest: 11400,
-  callVolume: 26,
-  callBidSize: 'XX',
-  callBid: 6.70,
-  callAsk: 7.70,
-  callAskSize: 'XX',
-  strike: 165,
-  putDelta: -0.019,
-  putOptionOpenInterest: 30400,
-  putVolume: 27,
-  putBidSize: 'XX',
-  putBid: 5.70,
-  putAsk: 8.70,
-  putAskSize: 'XX'
+    callDelta: 0.981,
+    callOptionOpenInterest: 11400,
+    callVolume: 26,
+    callBidSize: 'XX',
+    callBid: 6.70,
+    callAsk: 7.70,
+    callAskSize: 'XX',
+    strike: 165,
+    putDelta: -0.019,
+    putOptionOpenInterest: 30400,
+    putVolume: 27,
+    putBidSize: 'XX',
+    putBid: 5.70,
+    putAsk: 8.70,
+    putAskSize: 'XX'
   },
   {
     callDelta: 0.981,
@@ -107,38 +108,38 @@ const optionChainMock: OptionChain[] = [
     putBid: 5.70,
     putAsk: 8.70,
     putAskSize: 'XX'
-    },
-    {
-      callDelta: 0.981,
-      callOptionOpenInterest: 11400,
-      callVolume: 26,
-      callBidSize: 'XX',
-      callBid: 6.70,
-      callAsk: 7.70,
-      callAskSize: 'XX',
-      strike: 165,
-      putDelta: -0.019,
-      putOptionOpenInterest: 30400,
-      putVolume: 27,
-      putBidSize: 'XX',
-      putBid: 5.70,
-      putAsk: 8.70,
-      putAskSize: 'XX'
-      }
+  },
+  {
+    callDelta: 0.981,
+    callOptionOpenInterest: 11400,
+    callVolume: 26,
+    callBidSize: 'XX',
+    callBid: 6.70,
+    callAsk: 7.70,
+    callAskSize: 'XX',
+    strike: 165,
+    putDelta: -0.019,
+    putOptionOpenInterest: 30400,
+    putVolume: 27,
+    putBidSize: 'XX',
+    putBid: 5.70,
+    putAsk: 8.70,
+    putAskSize: 'XX'
+  }
 ]
 
 const portfolioTitles: TitlePortfolio[] = [
-  {title: "DrillDown Daily P&L", property: "drillDownPnL", styles: ['posativeNegativeColor']},
-  {title: "Fin Instr", property: "finInstr"},
-  {title: "Position", property: "position"},
-  {title: "Market Val.", property: "marketVal"},
-  {title: "Avg. Price", property: "avgPrice"},
-  {title: "Last", property: "last"},
-  {title: "Change", property: "change", styles: ['addPlus', 'posativeNegativeColor']},
-  {title: "% Of Net Liq", property: "netLiqPercent", styles: ['posativeNegativeColor']},
-  {title: "% Daily P&L", property: "pnLPercent"},
-  {title: "Delta", property: "delta"},
-  {title: "Gamma", property: "gamma"},
+  { title: "DrillDown Daily P&L", property: "drillDownPnL", styles: ['posativeNegativeColor'] },
+  { title: "Fin Instr", property: "finInstr" },
+  { title: "Position", property: "position" },
+  { title: "Market Val.", property: "marketVal" },
+  { title: "Avg. Price", property: "avgPrice" },
+  { title: "Last", property: "last" },
+  { title: "Change", property: "change", styles: ['addPlus', 'posativeNegativeColor'] },
+  { title: "% Of Net Liq", property: "netLiqPercent", styles: ['posativeNegativeColor'] },
+  { title: "% Daily P&L", property: "pnLPercent" },
+  { title: "Delta", property: "delta" },
+  { title: "Gamma", property: "gamma" },
 ];
 
 const portfolioMock: Portfolio[] = [
@@ -196,6 +197,24 @@ const xLabels = [
 ];
 
 const Simulator: React.FC = () => {
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    handleClickOpen()
+  }, [])
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleSimulationStart = () => {
+    setOpen(false); // Close the dialog when simulation starts
+  };
+
   return (
     <div>
       <SimulationControls></SimulationControls>
@@ -205,16 +224,36 @@ const Simulator: React.FC = () => {
         <OrderEntry></OrderEntry>
       </div>
       <UnderlyingIndex></UnderlyingIndex>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        maxWidth="xs"
+        fullWidth
+        PaperProps={{
+          sx: {
+            background: 'linear-gradient(135deg, #00022c 0%, #000003 100%)',
+            color: '#ffffff',
+            padding: '20px',
+            borderRadius: '8px',
+            border: '1px white solid'
+          }
+        }}
+      >
+        <DialogTitle>Simulation Builder</DialogTitle>
+        <DialogContent>
+          <SimulationBuilder onSimulationStart={handleSimulationStart} />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
 
 class SimulationControls extends React.Component {
   render(): React.ReactNode {
-    return(
+    return (
       <Paper className="controls-card">
-        <div style={ { color: "white" } }>Simulation Controls</div>
-        <div>  
+        <div style={{ color: "white" }}>Simulation Controls</div>
+        <div>
           <div className="panel">
             <div>
               <IconButton className='speed-control-button'>
@@ -246,7 +285,7 @@ class SimulationControls extends React.Component {
           </div>
         </div>
       </Paper>
-  )
+    )
   }
 }
 
@@ -300,8 +339,8 @@ class MainTable extends React.Component<{ title: string, values: any[], titles: 
   render(): React.ReactNode {
     return (
       <Paper className="table-card">
-        <div style={ { color: "white" } }>{this.props.title}</div>
-        <TableContainer sx={{background: 'transparent !important'}} component={Paper}>
+        <div style={{ color: "white" }}>{this.props.title}</div>
+        <TableContainer sx={{ background: 'transparent !important' }} component={Paper}>
           <Table sx={{ minWidth: 650, background: 'transparent !important' }} aria-label="simple table">
             <TableHead className="table-head">
               <TableRow>
@@ -317,7 +356,7 @@ class MainTable extends React.Component<{ title: string, values: any[], titles: 
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
                   {this.props.titles.map((value => (
-                    <TableCell style={{color: value.styles?.includes("posativeNegativeColor") ? this.positiveNegativeColor(row[value.property]) : ''}}>{this.sytleProperty(row[value.property], value.styles)}</TableCell>
+                    <TableCell style={{ color: value.styles?.includes("posativeNegativeColor") ? this.positiveNegativeColor(row[value.property]) : '' }}>{this.sytleProperty(row[value.property], value.styles)}</TableCell>
                   )))}
                 </TableRow>
               ))}
@@ -331,19 +370,19 @@ class MainTable extends React.Component<{ title: string, values: any[], titles: 
 
 class OrderEntry extends React.Component {
   render(): React.ReactNode {
-    return(
+    return (
       <Paper className="table-card">
-        <div style={ { color: "white" } }>Order Entry</div>
+        <div style={{ color: "white" }}>Order Entry</div>
         <div>
           <NumberInput></NumberInput>
-          <div style={ { color: "white" } }>quantity</div>
+          <div style={{ color: "white" }}>quantity</div>
         </div>
         <div>
           <NumberInput></NumberInput>
-          <div style={ { color: "white" } }>limit price</div>
+          <div style={{ color: "white" }}>limit price</div>
         </div>
         <div>
-          <InputLabel id="select-label" style={ { color: "white" } }>Order Type</InputLabel>
+          <InputLabel id="select-label" style={{ color: "white" }}>Order Type</InputLabel>
           <Select
             labelId="select-label"
             label="Order Type"
@@ -378,7 +417,7 @@ class NumberInput extends React.Component {
 
 class UnderlyingIndex extends React.Component {
   render(): React.ReactNode {
-    return(
+    return (
       <Paper className='table-card'>
         <LineChart
           width={500}
