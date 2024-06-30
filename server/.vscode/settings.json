@@ -1,0 +1,6 @@
+{
+    "python.analysis.extraPaths": [
+        "D:\\Projects\\python\\Python\\Python37-35\\Lib\\",
+        "./gateway"
+    ]
+}
