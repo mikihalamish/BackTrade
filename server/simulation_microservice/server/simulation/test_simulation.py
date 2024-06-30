@@ -1,8 +1,8 @@
 import asyncio
 from datetime import datetime
 
-from server.simulation_microservice.models import SimulationConfig, DteFile
-from server.simulation_microservice.simulation import Simulation
+from models import SimulationConfig, DteFile
+from simulation import Simulation
 
 
 async def main():
