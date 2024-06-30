@@ -41,3 +41,5 @@ env*
 .cache/
 
 appname/static/public/*
+
+server/data_service/google_creds.json
