@@ -1,2 +1,8 @@
-Flask
-python-dotenv==1.0.1
+FastAPI
+python-decouple
+jwt
+beanie
+fastapi_jwt
+bcrypt
+authlib
+uvicorn 
