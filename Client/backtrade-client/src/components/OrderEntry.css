@@ -1,0 +1,21 @@
+.extra-padding {
+  padding: 1rem !important;
+}
+
+.type-select {
+  width: 100%;
+}
+
+.order-entry > * {
+  margin: 0.5rem !important;
+}
+
+button.confirm-button {
+  margin: 0.5rem !important;
+  color: black !important;
+  font-weight: bold !important;
+}
+
+.confirm-button {
+  background: rgb(0, 67, 255) !important;
+}

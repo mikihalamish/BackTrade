@@ -1,0 +1,14 @@
+.table-head {
+  background: rgb(56, 58, 90) !important;
+  color: white !important;
+}
+
+.table-head th {
+  color: white !important;
+  padding: 10px;
+}
+
+.table-body tr td {
+  color: white;
+  padding: 10px;
+}
