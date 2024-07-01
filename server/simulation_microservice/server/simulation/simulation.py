@@ -6,7 +6,7 @@ from datetime import timedelta, datetime
 
 import pandas as pd
 
-from server.simulation_microservice.models import SimulationConfig, OptionChainSnapshot, OptionChainRow, DteFile
+from models import SimulationConfig, OptionChainSnapshot, OptionChainRow, DteFile
 
 
 class Simulation:
