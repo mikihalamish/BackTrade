@@ -2,54 +2,17 @@ import React, { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogTitle } from "@mui/material";
 import "./Simulator.css";
 import SimulationControls from "../components/SimulationControls";
-import SimulatorTable from "../components/SimulatorTable";
 import UnderlyingIndex from "../components/UnderlyingIndex";
 import OrderEntry from "../components/OrderEntry";
 import SimulationBuilder from "../components/SimulationBuilder";
-
-type TitleRow = {
-  title: string;
-  property: keyof OptionChain;
-  styles?: string[];
-};
-
-type TitlePortfolio = {
-  title: string;
-  property: keyof Portfolio;
-  styles?: string[];
-};
-
-type OptionChain = {
-  callDelta: number;
-  callOptionOpenInterest: number;
-  callVolume: number;
-  callBidSize: string;
-  callBid: number;
-  callAsk: number;
-  callAskSize: string;
-  strike: number;
-  putDelta: number;
-  putOptionOpenInterest: number;
-  putVolume: number;
-  putBidSize: string;
-  putBid: number;
-  putAsk: number;
-  putAskSize: string;
-};
-
-type Portfolio = {
-  drillDownPnL: number;
-  finInstr: string;
-  position: number;
-  marketVal: number;
-  avgPrice: number;
-  last: number;
-  change: number;
-  netLiqPercent: number;
-  pnLPercent: number;
-  delta: number;
-  gamma: number;
-};
+import OptionChain from "../components/OptionChain";
+import {
+  OptionChainData,
+  PortfolioData,
+  TitlePortfolio,
+  TitleRow,
+} from "../types";
+import Portfolio from "../components/Portfolio";
 
 const optionChainTitles: TitleRow[] = [
   { title: "Delta", property: "callDelta" },
@@ -77,7 +40,7 @@ const optionChainTitles: TitleRow[] = [
   { title: "Ask Size", property: "putAskSize" },
 ];
 
-const optionChainMock: OptionChain[] = [
+const optionChainMock: OptionChainData[] = [
   {
     callDelta: 0.981,
     callOptionOpenInterest: 11400,
@@ -157,7 +120,7 @@ const portfolioTitles: TitlePortfolio[] = [
   { title: "Gamma", property: "gamma" },
 ];
 
-const portfolioMock: Portfolio[] = [
+const portfolioMock: PortfolioData[] = [
   {
     drillDownPnL: 4,
     finInstr: "ICL",
@@ -221,18 +184,15 @@ const Simulator: React.FC = () => {
   return (
     <div>
       <SimulationControls></SimulationControls>
-      <SimulatorTable
+      <OptionChain
         title="Option Chain"
-        titles={optionChainTitles}
         values={optionChainMock}
-      ></SimulatorTable>
+        onClickCall={(event) => console.log("Call", event)}
+        onClickPut={(event) => console.log("Put", event)}
+      ></OptionChain>
       <div className="horizontal-container">
         <div>
-          <SimulatorTable
-            title="Portfolio"
-            titles={portfolioTitles}
-            values={portfolioMock}
-          ></SimulatorTable>
+          <Portfolio></Portfolio>
           <UnderlyingIndex></UnderlyingIndex>
         </div>
 
