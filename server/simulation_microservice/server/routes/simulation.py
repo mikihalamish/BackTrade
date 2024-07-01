@@ -1,4 +1,5 @@
-from fastapi import APIRouter, WebSocket
+from beanie import PydanticObjectId
+from fastapi import APIRouter, Response, WebSocket
 from  models.simulation import  SimulationInset,SimulationConfig
 
 router = APIRouter(prefix="/simulation", tags=["Simulation"])
@@ -13,8 +14,12 @@ async def createSimulation(simulationInset: SimulationInset) -> SimulationConfig
     return simulationConfig
 
 @router.websocket('/{simulation_id}/ws')
-async def simulation_ws(websocket: WebSocket, simulation_id:str):
+async def simulation_ws(websocket: WebSocket, simulation_id:PydanticObjectId):
     """Get WS for simulation"""
+    simulation  = await SimulationConfig.get(simulation_id)
+    if simulation is None:
+            await websocket.send_denial_response(response=Response(content="no such simulation id exists",status_code=400))
+            return
     await websocket.accept()
     while True: 
         data = await websocket.receive_text()
