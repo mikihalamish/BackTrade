@@ -1,25 +1,40 @@
 import React from "react";
 import {
-  Button,
-  TextField,
+  Paper,
   Box,
   Select,
   MenuItem,
   FormControl,
   InputLabel,
-  Paper,
+  TextField,
+  Button,
   IconButton,
   Typography,
   SelectChangeEvent,
 } from "@mui/material";
 import { Add, Remove } from "@mui/icons-material";
 import "./OrderEntry.css";
+import { OptionChainData } from "../types";
 
-const OrderEntry: React.FC = () => {
+interface OrderEntryProps {
+  selectedOption: OptionChainData | null;
+}
+
+const OrderEntry: React.FC<OrderEntryProps> = ({ selectedOption }) => {
   const [strikePrice, setStrikePrice] = React.useState<number>(0);
   const [type, setType] = React.useState<string>("");
   const [symbol, setSymbol] = React.useState<string>("BTC/JPY");
   const [expirationDate, setExpirationDate] = React.useState<string>("");
+
+  React.useEffect(() => {
+    if (selectedOption) {
+      setStrikePrice(selectedOption.strike);
+      setType(selectedOption.callDelta > 0 ? "Call" : "Put");
+      // Assuming you have a method to get symbol and expiration date from the option chain data
+      setSymbol("BTC/JPY"); // Replace with actual data
+      setExpirationDate("2024-08-30"); // Replace with actual data
+    }
+  }, [selectedOption]);
 
   const handleIncrement = () => {
     setStrikePrice((prev) => prev + 1);

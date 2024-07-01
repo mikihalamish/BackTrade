@@ -190,18 +190,19 @@ const mockData: DteData[] = [
   },
 ];
 
-class OptionChain extends React.Component<
-  {
-    title: string;
-    values: OptionChainData[];
-    onClickCall: (event: any) => any;
-    onClickPut: (event: any) => any;
-  },
-  {
-    selectedTab: number;
-  }
-> {
-  state = {
+interface OptionChainProps {
+  title: string;
+  values: OptionChainData[];
+  onClickCall: (option: OptionChainData) => void;
+  onClickPut: (option: OptionChainData) => void;
+}
+
+interface OptionChainState {
+  selectedTab: number;
+}
+
+class OptionChain extends React.Component<OptionChainProps, OptionChainState> {
+  state: OptionChainState = {
     selectedTab: 0,
   };
 
@@ -224,33 +225,23 @@ class OptionChain extends React.Component<
   }
 
   formatNumber(number: number) {
-    // Use the toLocaleString method to add suffixes to the number
     return number.toLocaleString("en-US", {
-      // add suffixes for thousands, millions, and billions
-      // the maximum number of decimal places to use
       maximumFractionDigits: 2,
-      // specify the abbreviations to use for the suffixes
       notation: "compact",
       compactDisplay: "short",
     });
   }
 
   addPlus(number: number) {
-    if (number > 0) return "+" + number.toString();
-    else return number.toString();
+    return number > 0 ? "+" + number.toString() : number.toString();
   }
 
   positiveNegativeColor(number: any) {
     if (typeof number === "number") {
-      if (number > 0) {
-        return "green";
-      } else if (number === 0) {
-        return "white";
-      } else {
-        return "red";
-      }
+      if (number > 0) return "green";
+      else if (number === 0) return "white";
+      else return "red";
     }
-
     return "white";
   }
 
@@ -261,6 +252,7 @@ class OptionChain extends React.Component<
 
   render(): React.ReactNode {
     const { selectedTab } = this.state;
+    const { values, onClickCall, onClickPut } = this.props;
     const currentData = mockData[selectedTab].values;
 
     return (
@@ -325,86 +317,86 @@ class OptionChain extends React.Component<
                 <TableRow key={index}>
                   <TableCell
                     className="value-cell"
-                    onClick={this.props.onClickCall}
+                    onClick={() => onClickCall(row)}
                   >
                     {row.callDelta}
                   </TableCell>
                   <TableCell
                     className="value-cell"
-                    onClick={this.props.onClickCall}
+                    onClick={() => onClickCall(row)}
                   >
                     {row.callOptionOpenInterest}
                   </TableCell>
                   <TableCell
                     className="value-cell"
-                    onClick={this.props.onClickCall}
+                    onClick={() => onClickCall(row)}
                   >
                     {row.callVolume}
                   </TableCell>
                   <TableCell
                     className="value-cell"
-                    onClick={this.props.onClickCall}
+                    onClick={() => onClickCall(row)}
                   >
                     {row.callBidSize}
                   </TableCell>
                   <TableCell
                     className="value-cell"
-                    onClick={this.props.onClickCall}
+                    onClick={() => onClickCall(row)}
                   >
                     {row.callBid}
                   </TableCell>
                   <TableCell
                     className="value-cell"
-                    onClick={this.props.onClickCall}
+                    onClick={() => onClickCall(row)}
                   >
                     {row.callAsk}
                   </TableCell>
                   <TableCell
                     className="value-cell"
-                    onClick={this.props.onClickCall}
+                    onClick={() => onClickCall(row)}
                   >
                     {row.callAskSize}
                   </TableCell>
                   <TableCell className="strike-cell">{row.strike}</TableCell>
                   <TableCell
                     className="value-cell"
-                    onClick={this.props.onClickPut}
+                    onClick={() => onClickPut(row)}
                   >
                     {row.putDelta}
                   </TableCell>
                   <TableCell
                     className="value-cell"
-                    onClick={this.props.onClickPut}
+                    onClick={() => onClickPut(row)}
                   >
                     {row.putOptionOpenInterest}
                   </TableCell>
                   <TableCell
                     className="value-cell"
-                    onClick={this.props.onClickPut}
+                    onClick={() => onClickPut(row)}
                   >
                     {row.putVolume}
                   </TableCell>
                   <TableCell
                     className="value-cell"
-                    onClick={this.props.onClickPut}
+                    onClick={() => onClickPut(row)}
                   >
                     {row.putBidSize}
                   </TableCell>
                   <TableCell
                     className="value-cell"
-                    onClick={this.props.onClickPut}
+                    onClick={() => onClickPut(row)}
                   >
                     {row.putBid}
                   </TableCell>
                   <TableCell
                     className="value-cell"
-                    onClick={this.props.onClickPut}
+                    onClick={() => onClickPut(row)}
                   >
                     {row.putAsk}
                   </TableCell>
                   <TableCell
                     className="value-cell"
-                    onClick={this.props.onClickPut}
+                    onClick={() => onClickPut(row)}
                   >
                     {row.putAskSize}
                   </TableCell>

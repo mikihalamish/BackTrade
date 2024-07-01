@@ -164,6 +164,9 @@ const portfolioMock: PortfolioData[] = [
 
 const Simulator: React.FC = () => {
   const [open, setOpen] = useState(false);
+  const [selectedOption, setSelectedOption] = useState<OptionChainData | null>(
+    null
+  );
 
   useEffect(() => {
     handleClickOpen();
@@ -181,22 +184,25 @@ const Simulator: React.FC = () => {
     setOpen(false); // Close the dialog when simulation starts
   };
 
+  const handleOptionSelect = (option: OptionChainData) => {
+    setSelectedOption(option);
+  };
+
   return (
     <div>
-      <SimulationControls></SimulationControls>
+      <SimulationControls />
       <OptionChain
         title="Option Chain"
         values={optionChainMock}
-        onClickCall={(event) => console.log("Call", event)}
-        onClickPut={(event) => console.log("Put", event)}
-      ></OptionChain>
+        onClickCall={(event) => handleOptionSelect(event)}
+        onClickPut={(event) => handleOptionSelect(event)}
+      />
       <div className="horizontal-container">
         <div>
-          <Portfolio></Portfolio>
-          <UnderlyingIndex></UnderlyingIndex>
+          <Portfolio />
+          <UnderlyingIndex />
         </div>
-
-        <OrderEntry></OrderEntry>
+        <OrderEntry selectedOption={selectedOption} />
       </div>
       <Dialog
         open={open}
