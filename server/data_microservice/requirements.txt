@@ -1,0 +1,4 @@
+Flask
+boto3
+pandas
+python-dotenv==1.0.1
